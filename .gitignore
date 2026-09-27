@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Local settings / secrets
+config/settings_local.py
+.env
+.env.*
+!.env.example
+
+# Django runtime
+*.log
+*.sqlite3
+media/
+
+# Generated static
+public/static/
+
+# IDE
+.idea/
+.vscode/
+
+# Windows / macOS
+Thumbs.db
+.DS_Store
+
+# Test/cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary
+*.zip
+*.bak
+*.tmp
+
+# Generated / temporary directories
+staticfiles/
+tmp/

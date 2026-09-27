@@ -1,0 +1,222 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+
+{% block title %}
+
+    {% if subtitle %}
+        {{ subtitle }} |
+    {% endif %}
+
+    {{ title }} | PM Dòng Tiền
+
+{% endblock %}
+
+
+{% block extrastyle %}
+
+    {{ block.super }}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'cashflow/css/admin_custom.css' %}"
+    >
+
+
+    <style>
+
+        /*
+         * =====================================================
+         * DEMO MODE - FORM GIAO DỊCH
+         * =====================================================
+         *
+         * Chỉ áp dụng cho:
+         *
+         * /admin/cashflow/transaction/add/
+         * /admin/cashflow/transaction/<id>/change/
+         *
+         * Không ảnh hưởng các màn Admin khác.
+         * =====================================================
+         */
+
+
+        /*
+         * =====================================================
+         * ẨN CÁC NÚT QUẢN LÝ DỮ LIỆU LIÊN QUAN
+         * =====================================================
+         *
+         * Ẩn:
+         * + Thêm
+         * Sửa
+         * Xem
+         *
+         * cạnh các dropdown:
+         *
+         * - Tài khoản
+         * - Người gửi / nhận
+         * - Đơn hàng
+         * =====================================================
+         */
+
+        body.app-cashflow.model-transaction.change-form
+        .related-widget-wrapper-link {
+
+            display: none !important;
+
+        }
+
+
+        body.app-cashflow.model-transaction.change-form
+        .related-widget-wrapper {
+
+            width: 100% !important;
+
+            display: block !important;
+
+        }
+
+
+        body.app-cashflow.model-transaction.change-form
+        .related-widget-wrapper select {
+
+            width: 100% !important;
+
+            max-width: 100% !important;
+
+        }
+
+
+        /*
+         * =====================================================
+         * ẨN NÚT LỊCH SỬ / BẢN GHI NHỚ
+         * =====================================================
+         *
+         * Django Admin mặc định hiển thị nút History
+         * ở góc trên của màn sửa.
+         *
+         * Bản demo chưa cần chức năng này nên ẩn toàn bộ
+         * object-tools trên màn giao dịch.
+         *
+         * Nút Xóa phía dưới form KHÔNG bị ảnh hưởng.
+         * =====================================================
+         */
+
+        body.app-cashflow.model-transaction.change-form
+        .object-tools {
+
+            display: none !important;
+
+        }
+
+
+        /*
+         * =====================================================
+         * NÚT LƯU
+         * =====================================================
+         *
+         * Django mặc định có:
+         *
+         * - Lưu
+         * - Lưu và thêm mới
+         * - Lưu và tiếp tục chỉnh sửa
+         *
+         * Bản demo chỉ giữ:
+         *
+         * - Lưu
+         * =====================================================
+         */
+
+
+        body.app-cashflow.model-transaction.change-form
+        .submit-row input[name="_addanother"] {
+
+            display: none !important;
+
+        }
+
+
+        body.app-cashflow.model-transaction.change-form
+        .submit-row input[name="_continue"] {
+
+            display: none !important;
+
+        }
+
+
+        body.app-cashflow.model-transaction.change-form
+        .submit-row input[name="_save"] {
+
+            min-width: 120px;
+
+        }
+
+    </style>
+
+{% endblock %}
+
+
+{% block branding %}
+
+<div id="site-name">
+
+    <a href="{% url 'admin:index' %}">
+        PM DÒNG TIỀN
+    </a>
+
+</div>
+
+{% endblock %}
+
+
+{% block usertools %}
+
+{% if has_permission %}
+
+<div id="user-tools">
+
+    <span class="pm-current-user">
+
+        {% if user.get_full_name %}
+
+            {{ user.get_full_name }}
+
+        {% else %}
+
+            {{ user.get_username }}
+
+        {% endif %}
+
+    </span>
+
+
+    <span class="pm-user-separator">
+        |
+    </span>
+
+
+    <form
+        id="logout-form"
+        method="post"
+        action="{% url 'admin:logout' %}"
+    >
+
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="pm-logout-button"
+        >
+            Đăng xuất
+        </button>
+
+    </form>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+
+{% block nav-global %}
+{% endblock %}

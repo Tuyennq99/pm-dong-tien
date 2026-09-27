@@ -1,0 +1,406 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load dashboard_tags %}
+
+{% block title %}
+Tổng quan | PM Dòng Tiền
+{% endblock %}
+
+{% block content_title %}
+{% endblock %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+
+<link
+    rel="stylesheet"
+    href="{% static 'cashflow/css/admin_dashboard.css' %}"
+>
+{% endblock %}
+
+{% block content %}
+
+{% cashflow_dashboard as dashboard %}
+
+<div class="cashflow-dashboard">
+
+    <!-- =====================================================
+         TIÊU ĐỀ
+         Dashboard chỉ hiển thị thông tin, không đặt nút
+         Thêm giao dịch / Danh sách giao dịch ở đây nữa.
+         ===================================================== -->
+
+    <div class="dashboard-page-header">
+
+        <div>
+            <h1>Tổng quan</h1>
+
+            <div class="dashboard-description">
+                Tổng hợp tình hình dòng tiền hiện tại
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         HÀNG TRÊN
+         ===================================================== -->
+
+    <div class="dashboard-top-grid">
+
+
+        <!-- DÒNG TIỀN HIỆN TẠI -->
+
+        <section class="dashboard-card current-card">
+
+            <div class="dashboard-card-title">
+                Dòng tiền hiện tại
+            </div>
+
+            <div class="dashboard-card-content">
+
+                <div class="dashboard-current-money">
+                    {{ dashboard.current_total|money_vnd }}
+                </div>
+
+                <div class="dashboard-unit">
+                    VND
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- DÒNG TIỀN THEO KHOẢNG THỜI GIAN -->
+
+        <section class="dashboard-card">
+
+            <div class="dashboard-card-title">
+                Dòng tiền trong khoảng thời gian
+            </div>
+
+            <div class="dashboard-card-content">
+
+                <form
+                    method="get"
+                    class="dashboard-date-filter"
+                >
+
+                    <div class="date-field">
+
+                        <label for="from_date">
+                            Từ ngày
+                        </label>
+
+                        <input
+                            type="date"
+                            id="from_date"
+                            name="from"
+                            value="{{ dashboard.start_date|date:'Y-m-d' }}"
+                        >
+
+                    </div>
+
+
+                    <div class="date-field">
+
+                        <label for="to_date">
+                            Đến ngày
+                        </label>
+
+                        <input
+                            type="date"
+                            id="to_date"
+                            name="to"
+                            value="{{ dashboard.end_date|date:'Y-m-d' }}"
+                        >
+
+                    </div>
+
+
+                    <div class="filter-action">
+
+                        <button
+                            type="submit"
+                            class="dashboard-button primary"
+                        >
+                            Tra cứu
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <div class="dashboard-summary-grid">
+
+
+                    <!-- TỔNG THU -->
+
+                    <div class="summary-box income">
+
+                        <div class="summary-name">
+                            Tổng thu
+                        </div>
+
+                        <div class="summary-number">
+                            {{ dashboard.total_income|money_vnd }}
+                        </div>
+
+                        <div class="dashboard-unit">
+                            VND
+                        </div>
+
+                    </div>
+
+
+                    <!-- TỔNG CHI -->
+
+                    <div class="summary-box expense">
+
+                        <div class="summary-name">
+                            Tổng chi
+                        </div>
+
+                        <div class="summary-number">
+                            {{ dashboard.total_expense|money_vnd }}
+                        </div>
+
+                        <div class="dashboard-unit">
+                            VND
+                        </div>
+
+                    </div>
+
+
+                    <!-- DÒNG TIỀN RÒNG -->
+
+                    <div class="summary-box net">
+
+                        <div class="summary-name">
+                            Dòng tiền ròng
+                        </div>
+
+                        <div class="summary-number">
+                            {{ dashboard.net_cashflow|money_vnd }}
+                        </div>
+
+                        <div class="dashboard-unit">
+                            VND
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         HÀNG DƯỚI
+         ===================================================== -->
+
+    <div class="dashboard-bottom-grid">
+
+
+        <!-- NGUỒN TIỀN -->
+
+        <section class="dashboard-card">
+
+            <div class="dashboard-card-title">
+                Nguồn tiền các tài khoản
+            </div>
+
+            <div class="dashboard-card-content">
+
+                <table class="dashboard-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th style="width: 70px;">
+                                STT
+                            </th>
+
+                            <th>
+                                Tài khoản
+                            </th>
+
+                            <th style="width: 160px;">
+                                Loại
+                            </th>
+
+                            <th
+                                class="right"
+                                style="width: 200px;"
+                            >
+                                Số dư (VND)
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for row in dashboard.accounts %}
+
+                        <tr>
+
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+
+                            <td>
+                                {{ row.account.name }}
+                            </td>
+
+                            <td>
+                                {{ row.account.get_account_type_display }}
+                            </td>
+
+                            <td class="right">
+                                {{ row.balance|money_vnd }}
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="4"
+                                class="empty-row"
+                            >
+                                Chưa có tài khoản.
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+
+                        <tr class="total-row">
+
+                            <td colspan="3">
+                                Tổng
+                            </td>
+
+                            <td class="right">
+                                {{ dashboard.current_total|money_vnd }}
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- NGÀY ÂM TIỀN -->
+
+        <section class="dashboard-card">
+
+            <div class="dashboard-card-title">
+                Các ngày bị âm tiền
+            </div>
+
+            <div class="dashboard-card-content">
+
+                <table class="dashboard-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th style="width: 70px;">
+                                STT
+                            </th>
+
+                            <th>
+                                Ngày
+                            </th>
+
+                            <th
+                                class="right"
+                                style="width: 200px;"
+                            >
+                                Số dư (VND)
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for row in dashboard.negative_days %}
+
+                        <tr>
+
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+
+                            <td>
+                                {{ row.date|date:"d/m/Y" }}
+                            </td>
+
+                            <td class="right negative-money">
+                                {{ row.balance|money_vnd }}
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="3"
+                                class="empty-row"
+                            >
+                                Không có ngày âm tiền trong khoảng đã chọn.
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block sidebar %}
+{% endblock %}

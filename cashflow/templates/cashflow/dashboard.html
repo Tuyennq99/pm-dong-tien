@@ -1,0 +1,503 @@
+{% extends "cashflow/base.html" %}
+
+
+{% block title %}
+Tổng quan | PM Dòng Tiền
+{% endblock %}
+
+
+{% block content %}
+
+
+<h1 class="page-title">
+    Tổng quan
+</h1>
+
+
+<!-- ======================================================
+     HÀNG 1
+     ====================================================== -->
+
+<div class="dashboard-top">
+
+
+    <!-- DÒNG TIỀN HIỆN TẠI -->
+
+    <section class="card">
+
+        <div class="card-header">
+            Dòng tiền hiện tại
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="current-money">
+                1.250.000.000
+            </div>
+
+            <div class="current-money-unit">
+                VND
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- DÒNG TIỀN TRONG KHOẢNG THỜI GIAN -->
+
+    <section class="card">
+
+        <div class="card-header">
+            Dòng tiền trong khoảng thời gian
+        </div>
+
+
+        <div class="card-body">
+
+
+            <!-- CHỌN NGÀY -->
+
+            <div class="date-filter-row">
+
+                <span class="date-filter-label">
+                    Từ ngày:
+                </span>
+
+                <input
+                    class="form-control"
+                    type="date"
+                    value="2026-09-01"
+                >
+
+
+                <span class="date-filter-label">
+                    Đến ngày:
+                </span>
+
+                <input
+                    class="form-control"
+                    type="date"
+                    value="2026-09-30"
+                >
+
+
+                <button class="btn btn-primary">
+                    Tra cứu
+                </button>
+
+            </div>
+
+
+            <!-- THU / CHI / DÒNG TIỀN RÒNG -->
+
+            <div class="dashboard-summary">
+
+
+                <!-- THU -->
+
+                <div class="summary-card summary-income">
+
+                    <div class="summary-label">
+                        Tổng thu
+                    </div>
+
+                    <div class="summary-value money-income">
+                        2.320.000.000
+                    </div>
+
+                    <div class="summary-unit">
+                        VND
+                    </div>
+
+                </div>
+
+
+                <!-- CHI -->
+
+                <div class="summary-card summary-expense">
+
+                    <div class="summary-label">
+                        Tổng chi
+                    </div>
+
+                    <div class="summary-value money-expense">
+                        1.850.000.000
+                    </div>
+
+                    <div class="summary-unit">
+                        VND
+                    </div>
+
+                </div>
+
+
+                <!-- DÒNG TIỀN RÒNG -->
+
+                <div class="summary-card summary-net">
+
+                    <div class="summary-label">
+                        Dòng tiền ròng
+                        (Thu - Chi)
+                    </div>
+
+                    <div class="summary-value money-primary">
+                        470.000.000
+                    </div>
+
+                    <div class="summary-unit">
+                        VND
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<!-- ======================================================
+     HÀNG 2
+     ====================================================== -->
+
+<div class="dashboard-bottom">
+
+
+    <!-- NGUỒN TIỀN CÁC TÀI KHOẢN -->
+
+    <section class="card">
+
+        <div class="card-header">
+            Nguồn tiền các tài khoản
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                STT
+                            </th>
+
+                            <th>
+                                Tài khoản
+                            </th>
+
+                            <th>
+                                Loại
+                            </th>
+
+                            <th class="text-right">
+                                Số dư (VND)
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        <tr>
+
+                            <td>
+                                1
+                            </td>
+
+                            <td>
+                                Tiền mặt
+                            </td>
+
+                            <td>
+                                Tiền mặt
+                            </td>
+
+                            <td class="text-right">
+                                150.000.000
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                2
+                            </td>
+
+                            <td>
+                                Vietcombank
+                            </td>
+
+                            <td>
+                                Ngân hàng
+                            </td>
+
+                            <td class="text-right">
+                                650.000.000
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                3
+                            </td>
+
+                            <td>
+                                Techcombank
+                            </td>
+
+                            <td>
+                                Ngân hàng
+                            </td>
+
+                            <td class="text-right">
+                                300.000.000
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                4
+                            </td>
+
+                            <td>
+                                BIDV
+                            </td>
+
+                            <td>
+                                Ngân hàng
+                            </td>
+
+                            <td class="text-right">
+                                150.000.000
+                            </td>
+
+                        </tr>
+
+
+                        <tr class="table-total">
+
+                            <td colspan="3">
+
+                                <strong>
+                                    Tổng
+                                </strong>
+
+                            </td>
+
+                            <td class="text-right">
+
+                                <strong>
+                                    1.250.000.000
+                                </strong>
+
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CÁC NGÀY ÂM TIỀN -->
+
+    <section class="card">
+
+        <div class="card-header">
+            Các ngày bị âm tiền trong khoảng thời gian
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                STT
+                            </th>
+
+                            <th>
+                                Ngày
+                            </th>
+
+                            <th class="text-right">
+                                Số dư (VND)
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        <tr>
+
+                            <td>
+                                1
+                            </td>
+
+                            <td>
+                                12/09/2026
+                            </td>
+
+                            <td
+                                class="
+                                    text-right
+                                    money-expense
+                                "
+                            >
+                                -50.000.000
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                2
+                            </td>
+
+                            <td>
+                                13/09/2026
+                            </td>
+
+                            <td
+                                class="
+                                    text-right
+                                    money-expense
+                                "
+                            >
+                                -120.000.000
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                3
+                            </td>
+
+                            <td>
+                                14/09/2026
+                            </td>
+
+                            <td
+                                class="
+                                    text-right
+                                    money-expense
+                                "
+                            >
+                                -80.000.000
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                4
+                            </td>
+
+                            <td>
+                                22/09/2026
+                            </td>
+
+                            <td
+                                class="
+                                    text-right
+                                    money-expense
+                                "
+                            >
+                                -30.000.000
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<!-- ======================================================
+     NÚT CÔNG CỤ
+     ====================================================== -->
+
+<div class="action-row">
+
+
+    <a
+        href="{% url 'cashflow:transaction_create' %}"
+        class="btn"
+    >
+        Nhập thu / chi
+    </a>
+
+
+    <a
+        href="{% url 'cashflow:transaction_list' %}"
+        class="btn"
+    >
+        Xem danh sách chi tiết
+    </a>
+
+
+</div>
+
+
+{% endblock %}

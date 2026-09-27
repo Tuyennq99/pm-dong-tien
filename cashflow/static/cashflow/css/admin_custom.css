@@ -1,0 +1,683 @@
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body,
+input,
+textarea,
+select,
+button {
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif !important;
+}
+
+body {
+    margin: 0;
+
+    background: #f5f7fb;
+
+    color: #18233f;
+
+    font-size: 14px;
+
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+#header {
+    min-height: 60px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 24px;
+
+    background: linear-gradient(
+        90deg,
+        #2d90dc,
+        #1976c9
+    );
+
+    color: #ffffff;
+}
+
+#branding {
+    display: flex;
+
+    align-items: center;
+}
+
+#site-name {
+    margin: 0;
+}
+
+#site-name a,
+#site-name a:visited {
+    color: #ffffff !important;
+
+    font-size: 26px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    text-decoration: none;
+}
+
+#user-tools {
+    margin-left: auto;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    text-transform: none;
+
+    white-space: nowrap;
+}
+
+#user-tools a,
+#user-tools a:visited {
+    color: #ffffff !important;
+
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.main {
+    background: #f5f7fb;
+}
+
+#main {
+    width: 100%;
+
+    display: flex;
+
+    align-items: stretch;
+}
+
+#content-start {
+    flex: 1;
+
+    min-width: 0;
+}
+
+#content {
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    padding: 26px 30px 50px !important;
+
+    background: #f5f7fb;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+#nav-sidebar {
+    width: 260px !important;
+
+    min-width: 260px !important;
+
+    max-width: 260px !important;
+
+    padding: 14px 12px 30px;
+
+    overflow-x: hidden;
+
+    background: #eef4fa;
+
+    border-right: 1px solid #d5e0ea;
+}
+
+
+/* =========================================================
+   SIDEBAR SEARCH
+   ========================================================= */
+
+#nav-filter {
+    width: 100% !important;
+
+    height: 40px;
+
+    margin: 0 0 14px 0;
+
+    padding: 0 12px;
+
+    border: 1px solid #c4d5e4;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #223754;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   DASHBOARD LINK
+   ========================================================= */
+
+.cashflow-nav-dashboard {
+    margin-bottom: 14px;
+}
+
+.cashflow-nav-dashboard a {
+    width: 100%;
+
+    min-height: 44px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 15px;
+
+    border-radius: 6px;
+
+    background: #1976c9;
+
+    color: #ffffff !important;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    text-decoration: none !important;
+}
+
+.cashflow-nav-dashboard a:hover {
+    background: #116bb8;
+}
+
+
+/* =========================================================
+   SIDEBAR MODULE
+   ========================================================= */
+
+#nav-sidebar .module {
+    margin: 0 0 15px;
+
+    overflow: hidden;
+
+    border: 1px solid #cfdae6;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+}
+
+#nav-sidebar .module table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+#nav-sidebar .module caption {
+    padding: 12px 14px;
+
+    background: #e8f2fa !important;
+
+    border-bottom: 1px solid #d5e1eb;
+
+    color: #152b4b !important;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    text-align: left;
+}
+
+#nav-sidebar .module caption a,
+#nav-sidebar .module caption a:visited {
+    color: #152b4b !important;
+
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   SIDEBAR MODEL ROW
+   ========================================================= */
+
+#nav-sidebar .module th {
+    width: 100%;
+
+    padding: 0;
+
+    border-bottom: 1px solid #e4ebf1;
+
+    text-align: left;
+
+    font-weight: normal;
+}
+
+#nav-sidebar .module tr:last-child th {
+    border-bottom: 0;
+}
+
+#nav-sidebar .module th a {
+    width: 100%;
+
+    min-height: 43px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 14px;
+
+    color: #176fbe !important;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    text-decoration: none !important;
+}
+
+#nav-sidebar .module th a:hover {
+    background: #f0f7fd;
+
+    color: #0c5da5 !important;
+}
+
+
+/* =========================================================
+   BREADCRUMBS
+   ========================================================= */
+
+div.breadcrumbs {
+    padding: 10px 24px;
+
+    background: #eef5fb;
+
+    border-bottom: 1px solid #d7e2ec;
+
+    color: #49627a;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   GENERAL TITLE
+   ========================================================= */
+
+#content h1 {
+    margin: 0 0 22px;
+
+    color: #112a4d;
+
+    font-size: 32px;
+
+    line-height: 1.2;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   MODULE
+   ========================================================= */
+
+.module,
+.inline-group {
+    overflow: hidden;
+
+    border: 1px solid #cfdae6;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    box-shadow: none;
+}
+
+.module h2,
+.inline-group h2 {
+    padding: 14px 16px;
+
+    background: #eef5fb !important;
+
+    border-bottom: 1px solid #d6e1eb;
+
+    color: #13284b !important;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form-row {
+    padding: 14px 16px;
+
+    border-bottom: 1px solid #e5edf4;
+}
+
+.form-row label {
+    color: #223754;
+
+    font-size: 14px;
+
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+input[type="search"],
+select,
+textarea {
+    width: 100%;
+
+    max-width: 100%;
+
+    min-height: 40px;
+
+    padding: 8px 11px;
+
+    border: 1px solid #bfd0df;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #1d2f48;
+
+    font-size: 14px;
+}
+
+textarea {
+    min-height: 100px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #2b84d2;
+
+    outline: none;
+
+    box-shadow:
+        0 0 0 2px rgba(43, 132, 210, 0.08);
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input,
+a.button {
+    min-height: 40px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0 17px;
+
+    border: 1px solid #1976c9;
+
+    border-radius: 6px;
+
+    background: #1976c9;
+
+    color: #ffffff !important;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+.button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.submit-row input:hover,
+a.button:hover {
+    background: #0f68b7;
+}
+
+
+/* =========================================================
+   OBJECT TOOLS
+   ========================================================= */
+
+.object-tools a {
+    min-height: 40px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 0 16px;
+
+    border-radius: 6px;
+
+    background: #1976c9;
+
+    color: #ffffff !important;
+
+    font-size: 13px;
+
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   CHANGE LIST
+   ========================================================= */
+
+#changelist {
+    width: 100%;
+}
+
+#changelist .changelist-form-container {
+    overflow: hidden;
+
+    border: 1px solid #cfdae6;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+}
+
+#changelist table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+#changelist table thead th {
+    padding: 12px;
+
+    background: #eef5fb;
+
+    border-bottom: 1px solid #d6e1eb;
+
+    color: #314760;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+#changelist table tbody td,
+#changelist table tbody th {
+    padding: 12px;
+
+    border-bottom: 1px solid #e5edf4;
+
+    font-size: 14px;
+}
+
+#changelist table tbody tr:hover {
+    background: #f7fbfe;
+}
+
+
+/* =========================================================
+   FILTER
+   ========================================================= */
+
+#changelist-filter {
+    background: #f8fbfe;
+
+    border-left: 1px solid #dbe5ee;
+}
+
+
+/* =========================================================
+   SUBMIT ROW
+   ========================================================= */
+
+.submit-row {
+    padding: 15px 16px;
+
+    border: 1px solid #d6e1eb;
+
+    border-radius: 7px;
+
+    background: #f6faff;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    #nav-sidebar {
+        width: 230px !important;
+
+        min-width: 230px !important;
+
+        max-width: 230px !important;
+    }
+
+}
+
+
+@media (max-width: 900px) {
+
+    #main {
+        flex-direction: column;
+    }
+
+    #nav-sidebar {
+        width: 100% !important;
+
+        min-width: 100% !important;
+
+        max-width: 100% !important;
+
+        border-right: 0;
+
+        border-bottom: 1px solid #d5e0ea;
+    }
+
+}
+
+
+/* =========================================================
+   HEADER USER
+   ========================================================= */
+
+#user-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pm-current-user {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.pm-user-separator {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+#logout-form {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+}
+
+.pm-logout-button {
+    min-height: 0 !important;
+    height: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+
+    box-shadow: none !important;
+
+    color: #ffffff !important;
+
+    font-family: inherit !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+
+    line-height: inherit !important;
+
+    cursor: pointer;
+}
+
+.pm-logout-button:hover {
+    background: transparent !important;
+    color: #ffffff !important;
+    text-decoration: underline;
+}

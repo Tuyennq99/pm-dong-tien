@@ -1,0 +1,310 @@
+/* =========================
+   DASHBOARD WRAPPER
+========================= */
+.cashflow-dashboard {
+    width: 100%;
+}
+
+.dashboard-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+}
+
+.dashboard-page-header h1 {
+    margin: 0 !important;
+    font-size: 32px !important;
+    line-height: 1.2;
+    color: #112a4d;
+    font-weight: 700;
+}
+
+.dashboard-main-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.dashboard-button {
+    height: 48px;
+    min-width: 160px;
+    padding: 0 18px;
+    border-radius: 8px;
+    border: 1px solid #1976c9;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.dashboard-button.primary {
+    background: #1976c9;
+    color: #fff !important;
+}
+
+.dashboard-button.secondary {
+    background: #fff;
+    color: #153253 !important;
+    border-color: #c4d5e4;
+}
+
+/* =========================
+   GRID
+========================= */
+.dashboard-top-grid {
+    display: grid;
+    grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+    gap: 20px;
+    align-items: stretch;
+}
+
+.dashboard-bottom-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* =========================
+   CARD
+========================= */
+.dashboard-card {
+    background: #fff;
+    border: 1px solid #cfdae6;
+    border-radius: 10px;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.dashboard-card-title {
+    background: #eef5fb;
+    color: #142949;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 16px 18px;
+    border-bottom: 1px solid #d9e3ec;
+}
+
+.dashboard-card-content {
+    padding: 18px;
+}
+
+/* =========================
+   CURRENT MONEY
+========================= */
+.current-card .dashboard-card-content {
+    min-height: 350px;
+}
+
+.dashboard-current-money {
+    color: #116cc1;
+    font-size: 38px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    margin-top: 12px;
+    word-break: break-word;
+}
+
+.dashboard-unit {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #27405d;
+}
+
+/* =========================
+   DATE FILTER
+========================= */
+.dashboard-date-filter {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) auto;
+    gap: 16px;
+    align-items: end;
+    margin-bottom: 20px;
+}
+
+.date-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.date-field label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #30445f;
+    margin: 0;
+}
+
+.date-field input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #bfd0df;
+    border-radius: 8px;
+    padding: 0 14px;
+    font-size: 15px;
+    background: #fff;
+}
+
+.filter-action {
+    display: flex;
+    align-items: end;
+}
+
+.filter-action .dashboard-button {
+    height: 48px;
+    min-width: 130px;
+}
+
+/* =========================
+   SUMMARY BOXES
+========================= */
+.dashboard-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.summary-box {
+    min-height: 165px;
+    border-radius: 8px;
+    padding: 18px;
+    min-width: 0;
+}
+
+.summary-box.income {
+    background: #edf8f2;
+}
+
+.summary-box.expense {
+    background: #fff1f1;
+}
+
+.summary-box.net {
+    background: #fff8e9;
+}
+
+.summary-name {
+    font-size: 16px;
+    color: #1e3553;
+    min-height: 46px;
+    line-height: 1.35;
+}
+
+.summary-number {
+    font-size: 26px;
+    line-height: 1.2;
+    font-weight: 700;
+    word-break: break-word;
+    margin-top: 8px;
+}
+
+.summary-box.income .summary-number,
+.summary-box.income .dashboard-unit {
+    color: #0c8a49;
+}
+
+.summary-box.expense .summary-number,
+.summary-box.expense .dashboard-unit {
+    color: #df2e2e;
+}
+
+.summary-box.net .summary-number,
+.summary-box.net .dashboard-unit {
+    color: #136fc1;
+}
+
+/* =========================
+   TABLE
+========================= */
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.dashboard-table th {
+    background: #eef5fb;
+    color: #31465d;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 12px;
+    border: 1px solid #d7e2ec;
+    text-align: left;
+}
+
+.dashboard-table td {
+    padding: 12px;
+    border: 1px solid #e0e9f0;
+    font-size: 14px;
+    color: #203754;
+    vertical-align: middle;
+    word-wrap: break-word;
+}
+
+.dashboard-table .right {
+    text-align: right;
+}
+
+.total-row td {
+    background: #f4f8fc;
+    font-weight: 700;
+}
+
+.empty-row {
+    text-align: center;
+    color: #72839b;
+    padding: 20px !important;
+}
+
+.negative-money {
+    color: #df2e2e;
+    font-weight: 700;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1400px) {
+    .dashboard-summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1200px) {
+    .dashboard-top-grid,
+    .dashboard-bottom-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .dashboard-date-filter {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-action {
+        align-items: stretch;
+    }
+
+    .filter-action .dashboard-button {
+        width: 100%;
+    }
+
+    .dashboard-main-actions {
+        width: 100%;
+    }
+
+    .dashboard-main-actions .dashboard-button {
+        flex: 1;
+        min-width: 0;
+    }
+}

@@ -1,0 +1,319 @@
+{% load i18n %}
+
+{% url 'admin:index' as dashboard_url %}
+
+{% url 'admin:cashflow_transaction_changelist' as transaction_list_url %}
+{% url 'admin:cashflow_transaction_add' as transaction_add_url %}
+
+
+<style>
+
+    #nav-sidebar {
+        padding: 16px 12px 30px !important;
+    }
+
+
+    /* =========================
+       TỔNG QUAN
+       ========================= */
+
+    .pm-dashboard-link {
+        display: flex;
+        align-items: center;
+
+        min-height: 44px;
+
+        padding: 0 14px;
+
+        margin-bottom: 18px;
+
+        border-radius: 7px;
+
+        color: #173552 !important;
+
+        font-size: 14px;
+        font-weight: 600;
+
+        text-decoration: none !important;
+    }
+
+    .pm-dashboard-link:hover {
+        background: #e5f1fb;
+    }
+
+    .pm-dashboard-link.active {
+        background: #1976c9;
+
+        color: #ffffff !important;
+    }
+
+
+    /* =========================
+       TIÊU ĐỀ NHÓM
+       ========================= */
+
+    .pm-menu-section-title {
+        padding: 0 10px 9px;
+
+        color: #65788c;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        letter-spacing: 0.6px;
+
+        text-transform: uppercase;
+    }
+
+
+    /* =========================
+       GIAO DỊCH
+       ========================= */
+
+    .pm-menu-group {
+        margin-bottom: 7px;
+
+        border-radius: 7px;
+
+        overflow: hidden;
+    }
+
+
+    .pm-menu-group summary {
+        min-height: 44px;
+
+        display: flex;
+
+        align-items: center;
+
+        position: relative;
+
+        padding: 0 34px 0 14px;
+
+        cursor: pointer;
+
+        color: #183957;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        list-style: none;
+
+        user-select: none;
+    }
+
+    .pm-menu-group summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .pm-menu-group summary:hover {
+        background: #e8f3fc;
+    }
+
+
+    /* Mũi tên */
+
+    .pm-menu-group summary::after {
+        content: "›";
+
+        position: absolute;
+
+        right: 15px;
+
+        top: 50%;
+
+        transform:
+            translateY(-50%)
+            rotate(0deg);
+
+        color: #72869a;
+
+        font-size: 20px;
+
+        line-height: 1;
+
+        transition: transform 0.15s ease;
+    }
+
+    .pm-menu-group[open] summary::after {
+        transform:
+            translateY(-50%)
+            rotate(90deg);
+    }
+
+
+    /* =========================
+       MENU CON
+       ========================= */
+
+    .pm-submenu {
+        padding: 3px 0 7px 13px;
+    }
+
+    .pm-submenu a {
+        min-height: 38px;
+
+        display: flex;
+
+        align-items: center;
+
+        position: relative;
+
+        margin: 1px 7px;
+
+        padding: 0 12px 0 25px;
+
+        border-radius: 6px;
+
+        color: #35617f !important;
+
+        font-size: 13px;
+
+        font-weight: 400;
+
+        text-decoration: none !important;
+    }
+
+    .pm-submenu a::before {
+        content: "";
+
+        width: 5px;
+        height: 5px;
+
+        position: absolute;
+
+        left: 10px;
+
+        border-radius: 50%;
+
+        background: #9eb3c5;
+    }
+
+    .pm-submenu a:hover {
+        background: #edf6fd;
+
+        color: #1268b3 !important;
+    }
+
+    .pm-submenu a.active {
+        background: #dceefa;
+
+        color: #0e65b0 !important;
+
+        font-weight: 600;
+    }
+
+    .pm-submenu a.active::before {
+        background: #1976c9;
+    }
+
+
+    /* Parent đang được chọn */
+
+    .pm-menu-group.current {
+        background: rgba(225, 240, 251, 0.45);
+    }
+
+    .pm-menu-group.current > summary {
+        color: #0967b4;
+    }
+
+</style>
+
+
+<button
+    class="sticky toggle-nav-sidebar"
+    id="toggle-nav-sidebar"
+    aria-label="{% translate 'Toggle navigation' %}"
+>
+</button>
+
+
+<nav
+    class="sticky"
+    id="nav-sidebar"
+    aria-label="{% translate 'Sidebar' %}"
+>
+
+
+    <!-- =========================
+         TỔNG QUAN
+         ========================= -->
+
+    <a
+        href="{{ dashboard_url }}"
+        class="
+            pm-dashboard-link
+            {% if request.path == dashboard_url %}
+                active
+            {% endif %}
+        "
+    >
+        Tổng quan
+    </a>
+
+
+    <!-- =========================
+         GIAO DỊCH
+         ========================= -->
+
+    <div class="pm-menu-section-title">
+        Quản lý dòng tiền
+    </div>
+
+
+    <details
+        class="
+            pm-menu-group
+            {% if '/admin/cashflow/transaction/' in request.path %}
+                current
+            {% endif %}
+        "
+
+        {% if '/admin/cashflow/transaction/' in request.path %}
+            open
+        {% endif %}
+    >
+
+        <summary>
+            Giao dịch
+        </summary>
+
+
+        <div class="pm-submenu">
+
+            <a
+                href="{{ transaction_list_url }}"
+                class="
+                    {% if request.path == transaction_list_url %}
+                        active
+                    {% endif %}
+                "
+            >
+                Tất cả giao dịch
+            </a>
+
+
+            {% if perms.cashflow.add_transaction %}
+
+            <a
+                href="{{ transaction_add_url }}"
+                class="
+                    {% if request.path == transaction_add_url %}
+                        active
+                    {% endif %}
+                "
+            >
+                Thêm giao dịch
+            </a>
+
+            {% endif %}
+
+        </div>
+
+    </details>
+
+
+</nav>

@@ -1,0 +1,102 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}
+        PM Dòng Tiền
+        {% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'cashflow/css/app.css' %}"
+    >
+</head>
+
+
+<body>
+
+    <!-- HEADER -->
+    <header class="topbar">
+
+        <div class="topbar-logo">
+            PM DÒNG TIỀN
+        </div>
+
+        <div class="topbar-user">
+
+            {% if user.is_authenticated %}
+
+                <span>
+                    {{ user.get_full_name|default:user.username }}
+                </span>
+
+                <span class="topbar-separator">
+                    |
+                </span>
+
+                <a href="/admin/logout/">
+                    Đăng xuất
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </header>
+
+
+    <div class="app-layout">
+
+        <!-- MENU TRÁI -->
+        <aside class="sidebar">
+
+            <a
+                href="{% url 'cashflow:dashboard' %}"
+                class="sidebar-item {% if active_page == 'dashboard' %}active{% endif %}"
+            >
+                Tổng quan
+            </a>
+
+
+            <a
+                href="{% url 'cashflow:transaction_create' %}"
+                class="sidebar-item {% if active_page == 'input' %}active{% endif %}"
+            >
+                Nhập liệu
+            </a>
+
+
+            <a
+                href="{% url 'cashflow:transaction_list' %}"
+                class="sidebar-item {% if active_page == 'list' %}active{% endif %}"
+            >
+                Danh sách chi tiết
+            </a>
+
+        </aside>
+
+
+        <!-- NỘI DUNG -->
+        <main class="main-content">
+
+            {% block content %}
+            {% endblock %}
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>
