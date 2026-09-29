@@ -1,0 +1,171 @@
+{% extends "admin/change_list.html" %}
+{% load static dashboard_tags %}
+
+
+{% block extrastyle %}
+    {{ block.super }}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'cashflow/css/transaction_list.css' %}"
+    >
+{% endblock %}
+
+
+{% block filters %}
+{% endblock %}
+
+
+{% block search %}
+
+<section class="transaction-filter-card">
+
+    <div class="transaction-section-title">
+        Bộ lọc
+    </div>
+
+    <div class="transaction-filter-form">
+
+        {% for spec in cl.filter_specs %}
+
+            {% admin_filter_choices spec cl as choices %}
+
+            <div class="transaction-field">
+
+                <label>
+                    {{ spec.title }}
+                </label>
+
+                <select class="shared-filter-select">
+
+                    {% for choice in choices %}
+
+                        <option
+                            value="{{ choice.query_string }}"
+                            {% if choice.selected %}selected{% endif %}
+                        >
+                            {{ choice.display }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        {% endfor %}
+
+
+        <div class="transaction-field transaction-keyword">
+
+            <label for="shared_search">
+                Tìm kiếm
+            </label>
+
+            <input
+                id="shared_search"
+                type="text"
+                value="{{ cl.query }}"
+               placeholder="{% if opts.model_name == 'account' %}Mã tài khoản, tên ngân hàng, số tài khoản...{% elif opts.model_name == 'counterparty' %}Mã, tên, mã số thuế, địa chỉ...{% elif opts.model_name == 'order' %}Mã đơn hàng, tên đơn hàng, khách hàng...{% else %}Nhập từ khóa...{% endif %}"
+            >
+
+        </div>
+
+
+        <div class="transaction-filter-actions">
+
+            <button
+                type="button"
+                id="shared_filter_submit"
+                class="transaction-btn primary"
+            >
+                Tra cứu
+            </button>
+
+            <a
+                href="{{ request.path }}"
+                class="transaction-btn secondary"
+            >
+                Đặt lại
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const filterSelects =
+        document.querySelectorAll(".shared-filter-select");
+
+    const searchInput =
+        document.getElementById("shared_search");
+
+    const submitButton =
+        document.getElementById("shared_filter_submit");
+
+
+    submitButton.addEventListener("click", function () {
+
+        let url = window.location.pathname;
+        let params = new URLSearchParams();
+
+
+        filterSelects.forEach(function (select) {
+
+            if (!select.value) {
+                return;
+            }
+
+            const choiceParams =
+                new URLSearchParams(
+                    select.value.replace(/^\?/, "")
+                );
+
+            choiceParams.forEach(function (value, key) {
+                params.set(key, value);
+            });
+
+        });
+
+
+        if (searchInput.value.trim()) {
+            params.set(
+                "q",
+                searchInput.value.trim()
+            );
+        }
+
+
+        const query = params.toString();
+
+        window.location.href =
+            query ? url + "?" + query : url;
+
+    });
+
+
+    searchInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+                event.preventDefault();
+                submitButton.click();
+            }
+
+        }
+    );
+
+});
+</script>
+
+
+{% block object-tools %}
+{% endblock %}
+
+{% endblock %}

@@ -1,645 +1,1370 @@
 {% extends "admin/base_site.html" %}
 
 
+
+
+
 {% load static %}
+
 {% load dashboard_tags %}
 
 
+
+
+
 {% block title %}
+
 Giao dịch | PM Dòng Tiền
+
 {% endblock %}
+
+
+
 
 
 {% block content_title %}
+
 {% endblock %}
+
+
+
 
 
 {% block extrastyle %}
 
+
+
 {{ block.super }}
 
+
+
 <link
+
     rel="stylesheet"
+
     href="{% static 'cashflow/css/transaction_list.css' %}"
+
 >
 
+
+
 {% endblock %}
+
+
+
 
 
 {% block breadcrumbs %}
 
+
+
 <div class="breadcrumbs">
 
+
+
     <a href="{% url 'admin:index' %}">
+
         Tổng quan
+
     </a>
+
+
 
     <span>›</span>
 
+
+
     Giao dịch
+
+
 
 </div>
 
+
+
 {% endblock %}
+
+
+
 
 
 {% block content %}
 
 
+
+
+
 <div class="transaction-page">
 
 
+
+
+
     <!-- =====================================================
+
          HEADER
+
          ===================================================== -->
+
+
 
     <div class="transaction-page-header">
 
+
+
         <div>
 
+
+
             <h1>
+
                 Giao dịch
+
             </h1>
 
+
+
             <div class="page-description">
+
                 Danh sách và tra cứu các giao dịch thu / chi
+
             </div>
 
+
+
         </div>
+
+
 
     </div>
 
 
+
+
+
     <!-- =====================================================
+
          FILTER
+
          ===================================================== -->
+
+
 
     <section class="transaction-filter-card">
 
 
+
+
+
         <div class="transaction-section-title">
+
             Bộ lọc
+
         </div>
 
 
+
+
+
         <form
+
             method="get"
+
             class="transaction-filter-form"
+
         >
+
+         <div class="transaction-field">
+    <label for="quick_range">
+        Lọc nhanh
+    </label>
+
+    <select id="quick_range">
+        <option value="">Tùy chọn</option>
+        <option value="10">10 ngày gần nhất</option>
+        <option value="20">20 ngày gần nhất</option>
+        <option value="1m">1 tháng gần nhất</option>
+        <option value="3m">3 tháng gần nhất</option>
+        <option value="month">Tháng này</option>
+    </select>
+</div>
+
+
+            
+
 
 
             <!-- TỪ NGÀY -->
 
+
+
             <div class="transaction-field">
 
+
+
                 <label for="filter_from">
+
                     Từ ngày
+
                 </label>
 
+
+
                 <input
+
                     id="filter_from"
+
                     type="date"
+
                     name="from"
+
                     value="{{ filter_from }}"
+
                 >
 
+
+
             </div>
+
+
+
 
 
             <!-- ĐẾN NGÀY -->
 
+
+
             <div class="transaction-field">
 
+
+
                 <label for="filter_to">
+
                     Đến ngày
+
                 </label>
 
+
+
                 <input
+
                     id="filter_to"
+
                     type="date"
+
                     name="to"
+
                     value="{{ filter_to }}"
+
                 >
 
+
+
             </div>
+
+
+
 
 
             <!-- LOẠI -->
 
+
+
             <div class="transaction-field">
 
+
+
                 <label for="filter_type">
+
                     Thu / Chi
+
                 </label>
 
+
+
                 <select
+
                     id="filter_type"
+
                     name="type"
+
                 >
 
+
+
                     <option value="">
+
                         Tất cả
+
                     </option>
+
+
 
                     {% for value, label in transaction_types %}
 
+
+
                     <option
+
                         value="{{ value }}"
+
                         {% if filter_type == value %}
+
                             selected
+
                         {% endif %}
+
                     >
+
                         {{ label }}
+
                     </option>
+
+
 
                     {% endfor %}
 
+
+
                 </select>
 
+
+
             </div>
+
+
+
 
 
             <!-- TÀI KHOẢN -->
 
+
+
             <div class="transaction-field">
 
+
+
                 <label for="filter_account">
+
                     Tài khoản
+
                 </label>
 
+
+
                 <select
+
                     id="filter_account"
+
                     name="account"
+
                 >
 
+
+
                     <option value="">
+
                         Tất cả
+
                     </option>
+
+
 
                     {% for account in accounts %}
 
+
+
                     <option
+
                         value="{{ account.pk }}"
+
                         {% if filter_account == account.pk|stringformat:"s" %}
+
                             selected
+
                         {% endif %}
+
                     >
+
                         {{ account.name }}
+
                     </option>
+
+
 
                     {% endfor %}
 
+
+
                 </select>
 
+
+
             </div>
+
+
+
 
 
             <!-- TÌNH TRẠNG -->
 
+
+
             <div class="transaction-field">
 
+
+
                 <label for="filter_status">
+
                     Tình trạng
+
                 </label>
 
+
+
                 <select
+
                     id="filter_status"
+
                     name="status"
+
                 >
 
+
+
                     <option value="">
+
                         Tất cả
+
                     </option>
+
+
 
                     {% for value, label in statuses %}
 
+
+
                     <option
+
                         value="{{ value }}"
+
                         {% if filter_status == value %}
+
                             selected
+
                         {% endif %}
+
                     >
+
                         {{ label }}
+
                     </option>
+
+
 
                     {% endfor %}
 
+
+
                 </select>
 
+
+
             </div>
+
+
+
 
 
             <!-- TỪ KHÓA -->
 
+
+
             <div class="transaction-field transaction-keyword">
 
+
+
                 <label for="filter_q">
+
                     Tìm kiếm
+
                 </label>
 
+
+
                 <input
+
                     id="filter_q"
+
                     type="text"
+
                     name="q"
+
                     value="{{ filter_q }}"
+
                     placeholder="Mã GD, đơn hàng, người gửi / nhận..."
+
                 >
 
+
+
             </div>
+
+
+
 
 
             <!-- ACTION -->
 
+
+
             <div class="transaction-filter-actions">
 
+
+
                 <button
+
                     type="submit"
+
                     class="transaction-btn primary"
+
                 >
+
                     Tra cứu
+
                 </button>
 
 
+
+
+
                 <a
+
                     href="{% url 'admin:cashflow_transaction_changelist' %}"
+
                     class="transaction-btn secondary"
+
                 >
+
                     Đặt lại
+
                 </a>
 
+
+
             </div>
+
+
+
 
 
         </form>
 
+
+
     </section>
 
 
+
+
+
     <!-- =====================================================
+
          TABLE
+
          ===================================================== -->
+
+
 
     <section class="transaction-list-card">
 
 
+
+
+
         <div class="transaction-list-header">
 
+
+
             <div class="transaction-section-title">
+
                 Danh sách giao dịch
+
             </div>
 
+
+
             <div class="transaction-count">
+
                 {{ transaction_count }} giao dịch
+
             </div>
+
+
 
         </div>
 
 
+
+
+
         <div class="transaction-table-wrapper">
+
+
 
             <table class="transaction-table">
 
 
+
+
+
                 <thead>
+
+
 
                     <tr>
 
+
+
                         <th class="col-code">
+
                             Mã
+
                         </th>
+
+
 
                         <th class="col-date">
+
                             Ngày
+
                         </th>
+
+
 
                         <th class="col-type">
+
                             Thu / Chi
+
                         </th>
+
+
 
                         <th class="col-account">
+
                             Tài khoản
+
                         </th>
 
+
+
                         <th>
+
                             Người gửi / nhận
+
                         </th>
 
+
+
                         <th>
+
                             Đơn hàng
+
                         </th>
+
+
 
                         <th class="col-money">
+
                             Số tiền
+
                         </th>
+
+
 
                         <th class="col-status">
+
                             Tình trạng
+
                         </th>
+
+
 
                         <th class="col-updated">
+
                             Cập nhật
+
                         </th>
 
+
+
                         <th class="col-action">
+
                             Thao tác
+
                         </th>
+
+
 
                     </tr>
 
+
+
                 </thead>
+
+
+
 
 
                 <tbody>
 
 
+
+
+
                     {% for tx in transactions %}
+
+
+
 
 
                     {% with entry=tx.entries.all.0 %}
 
+
+
                     <tr>
+
+
+
 
 
                         <!-- MÃ -->
 
+
+
                         <td>
 
+
+
                             <a
+
                                 class="transaction-code"
+
                                 href="{% url 'admin:cashflow_transaction_change' tx.pk %}"
+
                             >
+
                                 {{ tx.code }}
+
                             </a>
 
+
+
                         </td>
+
+
+
 
 
                         <!-- NGÀY -->
 
+
+
                         <td>
+
                             {{ tx.transaction_date|date:"d/m/Y" }}
+
                         </td>
+
+
+
 
 
                         <!-- THU CHI -->
 
+
+
                         <td>
+
+
 
                             {% if tx.transaction_type == "INCOME" %}
 
+
+
                                 <span class="type-badge income">
+
                                     Thu
+
                                 </span>
+
+
 
                             {% else %}
 
+
+
                                 <span class="type-badge expense">
+
                                     Chi
+
                                 </span>
+
+
 
                             {% endif %}
 
+
+
                         </td>
+
+
+
 
 
                         <!-- TÀI KHOẢN -->
 
+
+
                         <td>
+
+
 
                             {% if entry %}
 
+
+
                                 {{ entry.account.name }}
+
+
 
                             {% else %}
 
+
+
                                 -
+
+
 
                             {% endif %}
 
+
+
                         </td>
+
+
+
 
 
                         <!-- NGƯỜI GỬI / NHẬN -->
 
+
+
                         <td>
+
+
 
                             {% if tx.counterparty %}
 
+
+
                                 {{ tx.counterparty.name }}
+
+
 
                             {% else %}
 
+
+
                                 -
+
+
 
                             {% endif %}
 
+
+
                         </td>
+
+
+
 
 
                         <!-- ĐƠN HÀNG -->
 
+
+
                         <td>
+
+
 
                             {% if tx.order %}
 
+
+
                                 {{ tx.order.name }}
+
+
 
                             {% else %}
 
+
+
                                 -
+
+
 
                             {% endif %}
 
+
+
                         </td>
+
+
+
 
 
                         <!-- SỐ TIỀN -->
 
+
+
                         <td
+
                             class="
+
                                 transaction-money
 
+
+
                                 {% if tx.transaction_type == 'INCOME' %}
+
                                     income
+
                                 {% else %}
+
                                     expense
+
                                 {% endif %}
+
                             "
+
                         >
+
                             {{ tx.amount|money_vnd }}
+
                         </td>
+
+
+
 
 
                         <!-- TÌNH TRẠNG -->
 
+
+
                         <td>
 
+
+
                             <span
+
                                 class="
+
                                     status-badge
+
                                     {{ tx.status|lower }}
+
                                 "
+
                             >
+
                                 {{ tx.get_status_display }}
+
                             </span>
 
+
+
                         </td>
+
+
+
 
 
                         <!-- CẬP NHẬT -->
 
+
+
                         <td>
 
+
+
                             <div>
+
                                 {{ tx.updated_at|date:"d/m/Y" }}
+
                             </div>
+
+
 
                             <div class="updated-time">
+
                                 {{ tx.updated_at|date:"H:i" }}
+
                             </div>
 
+
+
                         </td>
+
+
+
 
 
                         <!-- ACTION -->
 
+
+
                         <td>
+
+
 
                             <div class="transaction-actions">
 
-                                <a
-                                    href="{% url 'admin:cashflow_transaction_change' tx.pk %}"
-                                    class="action-link edit"
-                                >
-                                    Sửa
-                                </a>
+
 
                                 <a
-                                    href="{% url 'admin:cashflow_transaction_delete' tx.pk %}"
-                                    class="action-link delete"
+
+                                    href="{% url 'admin:cashflow_transaction_change' tx.pk %}"
+
+                                    class="action-link edit"
+
                                 >
-                                    Xóa
+
+                                    Sửa
+
                                 </a>
+
+
+
+                                <a
+
+                                    href="{% url 'admin:cashflow_transaction_delete' tx.pk %}"
+
+                                    class="action-link delete"
+
+                                >
+
+                                    Xóa
+
+                                </a>
+
+
 
                             </div>
+
+
 
                         </td>
 
 
+
+
+
                     </tr>
 
+
+
                     {% endwith %}
+
+
+
 
 
                     {% empty %}
 
 
+
+
+
                     <tr>
 
+
+
                         <td
+
                             colspan="10"
+
                             class="transaction-empty"
+
                         >
+
                             Không tìm thấy giao dịch phù hợp.
+
                         </td>
 
+
+
                     </tr>
+
+
+
 
 
                     {% endfor %}
 
 
+
+
+
                 </tbody>
+
+
+
 
 
             </table>
 
+
+
         </div>
 
 
+
+
+
         <!-- =================================================
+
              PAGINATION
+
              ================================================= -->
 
+
+
         {% if page_obj.paginator.num_pages > 1 %}
+
+
 
         <div class="transaction-pagination">
 
 
+
+
+
             <div class="pagination-info">
 
+
+
                 Trang
+
                 {{ page_obj.number }}
+
                 /
+
                 {{ page_obj.paginator.num_pages }}
 
+
+
             </div>
+
+
+
 
 
             <div class="pagination-pages">
 
 
+
+
+
                 {% if page_obj.has_previous %}
 
+
+
                 <a
+
                     href="?{% if base_query %}{{ base_query }}&{% endif %}page={{ page_obj.previous_page_number }}"
+
                     class="page-link"
+
                 >
+
                     ‹ Trước
+
                 </a>
 
+
+
                 {% endif %}
+
+
+
 
 
                 {% for number in page_obj.paginator.page_range %}
 
+
+
                     {% if number == page_obj.number %}
 
+
+
                     <span class="page-link active">
+
                         {{ number }}
+
                     </span>
+
+
 
                     {% elif number >= page_obj.number|add:"-2" and number <= page_obj.number|add:"2" %}
 
+
+
                     <a
+
                         href="?{% if base_query %}{{ base_query }}&{% endif %}page={{ number }}"
+
                         class="page-link"
+
                     >
+
                         {{ number }}
+
                     </a>
 
+
+
                     {% endif %}
+
+
 
                 {% endfor %}
 
 
+
+
+
                 {% if page_obj.has_next %}
 
+
+
                 <a
+
                     href="?{% if base_query %}{{ base_query }}&{% endif %}page={{ page_obj.next_page_number }}"
+
                     class="page-link"
+
                 >
+
                     Sau ›
+
                 </a>
+
+
 
                 {% endif %}
 
 
+
+
+
             </div>
+
+
 
         </div>
 
+
+
         {% endif %}
+
+
+
 
 
     </section>
 
 
+
+
+
 </div>
 
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const quickRange = document.getElementById("quick_range");
+    const fromInput = document.querySelector('input[name="from"]');
+    const toInput = document.querySelector('input[name="to"]');
+
+    if (!quickRange || !fromInput || !toInput) {
+        return;
+    }
+
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+    }
+
+    function getRange(range) {
+        const today = new Date();
+        const fromDate = new Date(today);
+
+        if (range === "10") {
+            fromDate.setDate(today.getDate() - 9);
+        } else if (range === "20") {
+            fromDate.setDate(today.getDate() - 19);
+        } else if (range === "1m") {
+            fromDate.setMonth(today.getMonth() - 1);
+        } else if (range === "3m") {
+            fromDate.setMonth(today.getMonth() - 3);
+        } else if (range === "month") {
+            fromDate.setDate(1);
+        } else {
+            return null;
+        }
+
+        return {
+            from: formatDate(fromDate),
+            to: formatDate(today),
+        };
+    }
+
+    quickRange.addEventListener("change", function () {
+        const range = getRange(this.value);
+
+        if (!range) {
+            return;
+        }
+
+        fromInput.value = range.from;
+        toInput.value = range.to;
+    });
+
+    // Khi trang load lại, tự nhận biết đang dùng khoảng nào
+    ["10", "20", "1m", "3m", "month"].forEach(function (value) {
+        const range = getRange(value);
+
+        if (
+            fromInput.value === range.from &&
+            toInput.value === range.to
+        ) {
+            quickRange.value = value;
+        }
+    });
+});
+</script>
 
 {% endblock %}
 
 
+
+
+
 {% block sidebar %}
+
 {% endblock %}

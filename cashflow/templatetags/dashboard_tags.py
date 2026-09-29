@@ -257,3 +257,7 @@ def money_vnd(value):
         TypeError,
     ):
         return "0"
+
+@register.simple_tag
+def admin_filter_choices(spec, cl):
+    return list(spec.choices(cl))

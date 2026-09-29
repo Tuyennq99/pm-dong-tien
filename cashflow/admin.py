@@ -1,11 +1,16 @@
-from datetime import date
 
+from django.urls import reverse
+from django.utils.html import format_html
+
+from datetime import date
 from django import forms
 from django.contrib import admin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.template.response import TemplateResponse
 from django.utils import timezone
+
+
 
 from .models import (
     Account,
@@ -92,22 +97,150 @@ class TransactionAdminForm(forms.ModelForm):
 # ============================================================
 # TÀI KHOẢN
 # ============================================================
+# List ngân hàng
+BANK_CHOICES = [
+    ("MBB", "MB Bank"),
+    ("TCB", "Techcombank"),
+    ("VCB", "Vietcombank"),
+    ("BIDV", "BIDV"),
+    ("ACB", "ACB"),
+    ("VPB", "VPBank"),
+    ("CTG", "VietinBank"),
+    ("AGR", "Agribank"),
+    ("TPB", "TPBank"),
+    ("STB", "Sacombank"),
+    ("VIB", "VIB"),
+    ("SHB", "SHB"),
+    ("MSB", "MSB"),
+    ("OCB", "OCB"),
+    ("HDB", "HDBank"),
+    ("SEA", "SeABank"),
+    ("LPB", "LPBank"),
+    ("EIB", "Eximbank"),
+]
 
+class AdminRowActionsMixin:
+    class Media:
+        css = {
+            "all": ("cashflow/css/transaction_list.css",)
+        }
+
+    @admin.display(description="Thao tác")
+    def row_actions(self, obj):
+        opts = obj._meta
+
+        edit_url = reverse(
+            f"admin:{opts.app_label}_{opts.model_name}_change",
+            args=[obj.pk],
+        )
+
+        delete_url = reverse(
+            f"admin:{opts.app_label}_{opts.model_name}_delete",
+            args=[obj.pk],
+        )
+
+        return format_html(
+            '<div class="transaction-actions">'
+            '<a class="action-link edit" href="{}">Sửa</a>'
+            '<a class="action-link delete" href="{}">Xóa</a>'
+            '</div>',
+            edit_url,
+            delete_url,
+        )
+
+    def changeform_view(
+        self,
+        request,
+        object_id=None,
+        form_url="",
+        extra_context=None,
+    ):
+        extra_context = extra_context or {}
+
+        # Chỉ giữ nút Lưu giống form Giao dịch
+        extra_context["show_save_and_add_another"] = False
+        extra_context["show_save_and_continue"] = False
+        extra_context["show_delete_link"] = False
+
+        return super().changeform_view(
+            request,
+            object_id,
+            form_url,
+            extra_context=extra_context,
+        )
+    @admin.display(description="Thao tác")
+    def row_actions(self, obj):
+        opts = obj._meta
+
+        edit_url = reverse(
+            f"admin:{opts.app_label}_{opts.model_name}_change",
+            args=[obj.pk],
+        )
+
+        delete_url = reverse(
+            f"admin:{opts.app_label}_{opts.model_name}_delete",
+            args=[obj.pk],
+        )
+
+        return format_html(
+            '<div class="transaction-actions">'
+            '<a class="action-link edit" href="{}">Sửa</a>'
+            '<a class="action-link delete" href="{}">Xóa</a>'
+            '</div>',
+            edit_url,
+            delete_url,
+        )
 @admin.register(Account)
-class AccountAdmin(admin.ModelAdmin):
+class AccountAdmin(AdminRowActionsMixin, admin.ModelAdmin):
+    change_list_template = "admin/cashflow/shared/change_list.html"
 
+
+
+    @admin.display(
+    description="Số dư ban đầu",
+    ordering="opening_balance",
+)
+    def opening_balance_display(self, obj):
+        return f"{obj.opening_balance:,.0f}".replace(",", ".")
+
+
+
+
+
+    class Media:
+        css = {
+            "all": ("cashflow/css/transaction_list.css",)
+        }
+    actions = None
+
+
+    def changeform_view(self, request, object_id=None, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["show_save_and_add_another"] = False
+        extra_context["show_save_and_continue"] = False
+
+        return super().changeform_view(
+            request,
+            object_id,
+            form_url,
+            extra_context=extra_context,
+        )
+
+        
     list_display = [
         "code",
         "name",
+        "account_number",
         "account_type",
-        "opening_balance",
+        "opening_balance_display",
         "opening_date",
         "is_active",
+        "row_actions",
     ]
 
     list_filter = [
-        "account_type",
-        "is_active",
+        # "account_type",
+        # "is_active",
     ]
 
     search_fields = [
@@ -116,6 +249,32 @@ class AccountAdmin(admin.ModelAdmin):
         "account_number",
     ]
 
+    def get_form(self, request, obj=None, **kwargs):
+            if obj is None and request.GET.get("bank") == "1":
+                kwargs["exclude"] = ["account_type"]
+
+            return super().get_form(request, obj, **kwargs)
+
+
+    def save_model(self, request, obj, form, change):
+            if not change and request.GET.get("bank") == "1":
+                obj.account_type = "BANK"
+
+            super().save_model(request, obj, form, change)
+
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+            if db_field.name == "name" and request.GET.get("bank") == "1":
+                kwargs["widget"] = forms.Select(
+                    choices=[("", "---------")] + BANK_CHOICES
+                )
+
+            return super().formfield_for_dbfield(
+                db_field,
+                request,
+                **kwargs,
+    )
+
+    
     ordering = [
         "code",
         "name",
@@ -127,17 +286,36 @@ class AccountAdmin(admin.ModelAdmin):
 # ============================================================
 
 @admin.register(Counterparty)
-class CounterpartyAdmin(admin.ModelAdmin):
+class CounterpartyAdmin(AdminRowActionsMixin, admin.ModelAdmin):
+    change_list_template = "admin/cashflow/shared/change_list.html"
 
+    class Media:
+        css = {
+            "all": ("cashflow/css/transaction_list.css",)
+        }
+    actions = None
+# Hiển thị nút lưu ở form
+    def changeform_view(self, request, object_id=None, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["show_save_and_add_another"] = False
+        extra_context["show_save_and_continue"] = False
+
+        return super().changeform_view(
+            request,
+            object_id,
+            form_url,
+            extra_context=extra_context,
+    )
     list_display = [
         "code",
         "name",
         "counterparty_type",
         "is_active",
+        "row_actions",
     ]
 
     list_filter = [
-        "counterparty_type",
+        # "counterparty_type",
         "is_active",
     ]
 
@@ -157,18 +335,60 @@ class CounterpartyAdmin(admin.ModelAdmin):
 # ĐƠN HÀNG
 # ============================================================
 
-@admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
 
+class OrderAdminForm(forms.ModelForm):
+
+    class Meta:
+        model = Order
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name in [
+            "order_type",
+            "code",
+            "name",
+            "customer",
+            "status",
+        ]:
+            if field_name in self.fields:
+                self.fields[field_name].required = True
+@admin.register(Order)
+class OrderAdmin(AdminRowActionsMixin, admin.ModelAdmin):
+    change_list_template = "admin/cashflow/shared/change_list.html"
+    form = OrderAdminForm
+    actions = None
+# Ẩn ký tự ở thêm form
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        formfield = super().formfield_for_dbfield(
+            db_field,
+            request,
+            **kwargs,
+        )
+        if db_field.name == "customer" and formfield:
+            widget = formfield.widget
+            if hasattr(widget, "can_add_related"):
+                widget.can_add_related = False
+                widget.can_change_related = False
+                widget.can_delete_related = False
+                widget.can_view_related = False
+
+        return formfield
+# /////////////
     list_display = [
         "code",
         "name",
         "customer",
         "status",
+        "order_type",
+        "row_actions",
     ]
 
     list_filter = [
+        "order_type",
         "status",
+        "customer",
     ]
 
     search_fields = [
@@ -177,9 +397,7 @@ class OrderAdmin(admin.ModelAdmin):
         "customer__name",
     ]
 
-    ordering = [
-        "code",
-    ]
+    ordering = ["-id"]
 
 
 # ============================================================

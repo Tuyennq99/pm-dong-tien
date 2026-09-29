@@ -158,11 +158,24 @@ class Counterparty(models.Model):
 # - Chi phí cố định
 # =========================================================
 class Order(models.Model):
+    class OrderType(models.TextChoices):
+        REPAIR = "REPAIR", "Sửa chữa"
+        PRODUCTION = "PRODUCTION", "Sản xuất"
+        DEVELOPMENT = "DEVELOPMENT", "Phát triển"
 
     class Status(models.TextChoices):
         ACTIVE = "ACTIVE", "Đang thực hiện"
         COMPLETED = "COMPLETED", "Hoàn thành"
         INACTIVE = "INACTIVE", "Ngừng sử dụng"
+
+
+    order_type = models.CharField(
+        max_length=20,
+        choices=OrderType.choices,
+        blank=True,
+        default="",
+        verbose_name="Loại đơn hàng",
+    )
 
     code = models.CharField(
         "Mã đơn hàng",
@@ -177,11 +190,8 @@ class Order(models.Model):
 
     customer = models.ForeignKey(
         Counterparty,
-        verbose_name="Khách hàng",
         on_delete=models.PROTECT,
-        null=True,
-        blank=True,
-        related_name="orders",
+        verbose_name="Khách hàng",
     )
 
     status = models.CharField(
@@ -192,8 +202,8 @@ class Order(models.Model):
     )
 
     note = models.TextField(
-        "Ghi chú",
         blank=True,
+        verbose_name="Ghi chú",
     )
 
     created_at = models.DateTimeField(
@@ -440,6 +450,8 @@ class TransactionEntry(models.Model):
             ),
         ]
 
+        
+
     def __str__(self):
         return (
             f"{self.transaction_id} - "
@@ -447,3 +459,5 @@ class TransactionEntry(models.Model):
             f"{self.get_direction_display()} - "
             f"{self.amount:,.2f}"
         )
+
+    
